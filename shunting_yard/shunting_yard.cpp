@@ -27,23 +27,13 @@ std::string shuntingYard(const std::vector<std::string>& tokens) {
     std::vector<std::string> stack;
     std::string output;
 
-    for (const auto& token : tokens) {
+    for (int i = 0; i < tokens.size(); i++) {
+        const auto& token = tokens[i];
         //std::cout << "[" + token + "]";
         if (isNumber(token)) {
             output += token + space;
         }
         else if (isFunction(token)) {
-            stack.push_back(token);
-        }
-        else if (isOperator(token)) {
-            while (!stack.empty() && (
-                       (isOperator(stack.back()) && (
-                            (token != "^" && getPrecedence(token) <= getPrecedence(stack.back())) ||
-                            (token != "^" && getPrecedence(token) < getPrecedence(stack.back()))
-                            )) || isFunction(stack.back()))) {
-                output += stack.back() + space;
-                stack.pop_back();
-            }
             stack.push_back(token);
         }
         else if (token == "(") {
@@ -56,11 +46,13 @@ std::string shuntingYard(const std::vector<std::string>& tokens) {
             }
             if (stack.empty()) return "Error: Mismatched parentheses!";
             stack.pop_back();
-            if (!stack.empty() && isFunction(stack.back())) {
+        } else if (isOperator(token)) {
+            while (!stack.empty() && (getPrecedence(stack.back()) >= getPrecedence(token))) {
                 output += stack.back() + space;
                 stack.pop_back();
             }
-        } else if (token == "pi" || token == "e" || token == "x") {
+            stack.push_back(token);
+        } else if (token == "pi" || token == "e") {
             output += token + space;
         }
         else {
@@ -68,11 +60,13 @@ std::string shuntingYard(const std::vector<std::string>& tokens) {
         }
     }
 
-    while (!stack.empty()) {
-        if (stack.back() == "(" || stack.back() == ")") {
-            return "Error: Mismatched parentheses!";
+    int stackSize = stack.size();
+    if (!stack.empty()) {
+        for (int i = 0; i < stackSize - 1; ++i) {
+            output += stack.back() + space;
+            stack.pop_back();
         }
-        output += stack.back() + space;
+        output += stack.back();
         stack.pop_back();
     }
 
