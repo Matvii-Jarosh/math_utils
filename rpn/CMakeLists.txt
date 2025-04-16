@@ -13,7 +13,11 @@ find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core)
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    qt_add_executable(rpn MANUAL_FINALIZATION main.cpp)
+    qt_add_executable(rpn MANUAL_FINALIZATION main.cpp
+        utils.cpp
+        utils.h
+        rpn.cpp
+        rpn.h)
 else()
     if(ANDROID)
         add_library(rpn SHARED main.cpp)

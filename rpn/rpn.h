@@ -19,18 +19,12 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-#include "rpn.h"
-#include "utils.h"
-#include <string>
-#include <iostream>
-#include <vector>
+#ifndef RPN_H
+#define RPN_H
 
-int main(int argc, char *argv[])
-{
-    std::string input;
-    std::getline(std::cin, input);
-    std::vector<std::string> tokens = tokenize(input);
-    long double output = rpn(tokens);
-    std::cout << output;
-    return 0;
-}
+#include <vector>
+#include <string>
+
+long double rpn(const std::vector<std::string>& tokens);
+
+#endif // RPN_H

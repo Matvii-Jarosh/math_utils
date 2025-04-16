@@ -19,18 +19,17 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-#include "rpn.h"
-#include "utils.h"
+#ifndef UTILS_H
+#define UTILS_H
+
 #include <string>
-#include <iostream>
 #include <vector>
 
-int main(int argc, char *argv[])
-{
-    std::string input;
-    std::getline(std::cin, input);
-    std::vector<std::string> tokens = tokenize(input);
-    long double output = rpn(tokens);
-    std::cout << output;
-    return 0;
-}
+std::vector<std::string> tokenize(const std::string& input);
+bool isNumber(std::string str);
+bool isFunction(const std::string& token);
+bool isOperator(const std::string& token);
+int getPrecedence(const std::string& op);
+bool isLeftAssociative(const std::string& op);
+
+#endif // UTILS_H
